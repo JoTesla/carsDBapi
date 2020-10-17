@@ -91,7 +91,7 @@ public class RestController {
     public List<RestResponse> selectFiltered(@RequestParam(name = "brand", defaultValue = "", required = false) String brand,
                                              @RequestParam(name = "color", defaultValue = "", required = false) String color,
                                              @RequestParam(name = "reg_num", defaultValue = "", required = false) String reg_num,
-                                             @RequestParam(name = "powerHP", defaultValue = "0", required = false) int powerHP,
+                                             @RequestParam(name = "powerHP", defaultValue = "", required = false) String powerHP,
                                              @RequestParam(name = "sold", defaultValue = "", required = false) String sold){
         List<RestResponse> cars = new ArrayList<RestResponse>();
 
@@ -100,12 +100,12 @@ public class RestController {
         try {
             connection = DriverManager.getConnection(dbURL, dbUser, dbPass);
             connection.setAutoCommit(false);
-            String where = "where n=n"; //Заглушка n=n чтобы запрос не крашился
+            String where = "where n=n"; //Заглушка n=n чтобы запрос не крашился, вместо перебора всех параметров
             //собираем запрос из параметров
             where +=(brand.isEmpty()  ? "": " AND brand   LIKE '%" + brand   + "%'") +
                     (color.isEmpty()  ? "": " AND color   LIKE '%" + color   + "%'") +
                     (reg_num.isEmpty()? "": " AND reg_num LIKE '%" + reg_num + "%'") +
-                    (powerHP<1        ? "": " AND powerHP =      " + powerHP       ) +
+                    (powerHP.isEmpty()? "": " AND powerhp =      " + powerHP       ) +
                     (sold.isEmpty()   ? "": " AND sold    =      " + sold          );
             String sql = "SELECT * FROM cars " + where; //полный запрос
             System.out.println(sql);
