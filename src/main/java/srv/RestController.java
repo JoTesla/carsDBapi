@@ -24,11 +24,12 @@ public class RestController {
             //, params = {"brand", "color", "reg_num", "powerHP", "sold"}
             )
     @ResponseBody
-    public List<Car> selectFiltered(@RequestParam(name = "brand", defaultValue = "", required = false) String brand,
-                                             @RequestParam(name = "color", defaultValue = "", required = false) String color,
-                                             @RequestParam(name = "reg_num", defaultValue = "", required = false) String reg_num,
-                                             @RequestParam(name = "powerHP", defaultValue = "", required = false) String powerHP,
-                                             @RequestParam(name = "sold", defaultValue = "", required = false) String sold){
+    public List<Car> selectFiltered( @RequestParam(name = "brand", defaultValue = "", required = false) String brand,
+                                     @RequestParam(name = "color", defaultValue = "", required = false) String color,
+                                     @RequestParam(name = "reg_num", defaultValue = "", required = false) String reg_num,
+                                     @RequestParam(name = "powerHP", defaultValue = "", required = false) String powerHP,
+                                     @RequestParam(name = "sold", defaultValue = "", required = false) String sold,
+                                     @RequestParam(name = "id", defaultValue = "",required = false) String n){
         List<Car> cars = new ArrayList<Car>();
 
         Connection connection;
@@ -36,7 +37,7 @@ public class RestController {
         try {
             connection = DriverManager.getConnection(dbURL, dbUser, dbPass);
             connection.setAutoCommit(false);
-            String where = "where n=n"; //Заглушка n=n чтобы запрос не крашился, вместо перебора всех параметров
+            String where = "where n=" + (n==""?"n":n);
             //собираем запрос из параметров
             where +=(brand.isEmpty()  ? "": " AND brand   LIKE '%" + brand   + "%'") +
                     (color.isEmpty()  ? "": " AND color   LIKE '%" + color   + "%'") +
