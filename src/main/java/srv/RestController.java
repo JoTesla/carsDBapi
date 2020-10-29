@@ -82,9 +82,31 @@ public class RestController {
             , params = {"params"}
     )
     @ResponseBody
-    public Car getNewCar(@RequestParam(name = "params", defaultValue = "", required = false) String params) throws JsonProcessingException {
+    public String getNewCar(@RequestParam(name = "params", defaultValue = "", required = false) String params) throws JsonProcessingException, SQLException {
         ReadFromJSON readFromJSON = new ReadFromJSON();
-        return readFromJSON.parseJSON(params);
+        Connection connection = DriverManager.getConnection(dbURL, dbUser, dbPass);
+        connection.setAutoCommit(false);
+        String result;
+        PreparedStatement preparedStatement;
+        Car car = readFromJSON.parseJSON(params);
+        String sql = "insert into cars (reg_num, brand, color, powerhp, sold) VALUES (?,?,?,?,?);";
+        try {
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,car.getReg_num());
+            preparedStatement.setString(2,car.getBrand());
+            preparedStatement.setString(3, car.getColor());
+            preparedStatement.setInt(4, car.getPowerHP());
+            preparedStatement.setBoolean(5, car.isSold());
+            preparedStatement.execute();
+            connection.commit();
+            result = "The car: " + car.getBrand() + " with number " + car.getReg_num() + " was successfully added.";
+        } catch (Exception e){
+            result = e.getMessage();
+            catcher(e);
+            connection.rollback();
+        }
+        return result;
 
     }
 
