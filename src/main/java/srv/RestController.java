@@ -29,7 +29,7 @@ public class RestController {
                                      @RequestParam(name = "reg_num", defaultValue = "", required = false) String reg_num,
                                      @RequestParam(name = "powerHP", defaultValue = "", required = false) String powerHP,
                                      @RequestParam(name = "sold", defaultValue = "", required = false) String sold,
-                                     @RequestParam(name = "id", defaultValue = "",required = false) String n){
+                                     @RequestParam(name = "id", defaultValue = "",required = false) String id){
         List<Car> cars = new ArrayList<Car>();
 
         Connection connection;
@@ -37,7 +37,7 @@ public class RestController {
         try {
             connection = DriverManager.getConnection(dbURL, dbUser, dbPass);
             connection.setAutoCommit(false);
-            String where = "where n=" + (n==""?"n":n);
+            String where = "where id=" + (id.isEmpty()?"id":id);
             //собираем запрос из параметров
             where +=(brand.isEmpty()  ? "": " AND brand   LIKE '%" + brand   + "%'") +
                     (color.isEmpty()  ? "": " AND color   LIKE '%" + color   + "%'") +
@@ -45,7 +45,7 @@ public class RestController {
                     (powerHP.isEmpty()? "": " AND powerhp =      " + powerHP       ) +
                     (sold.isEmpty()   ? "": " AND sold    =      " + sold          );
             String sql = "SELECT * FROM cars " + where; //полный запрос
-            System.out.println(sql);
+            //System.out.println(sql);
             cars = fillCars((List<Car>) cars, connection, sql);
 
 
@@ -68,6 +68,7 @@ public class RestController {
             car.setReg_num(resultSet.getString("reg_num"));
             car.setPowerHP(resultSet.getInt("powerHP"));
             car.setSold(resultSet.getBoolean("sold"));
+            car.setId(resultSet.getInt("id"));
             cars.add(car);
         }
         return cars;
