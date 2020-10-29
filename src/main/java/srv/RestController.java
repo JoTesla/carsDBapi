@@ -110,5 +110,26 @@ public class RestController {
         return result;
 
     }
+    @RequestMapping(value = "/del", method = RequestMethod.GET, produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+    @ResponseBody
+    public String deleteCar(@RequestParam(name = "id", defaultValue = "0", required = false) String n) throws JsonProcessingException, SQLException{
+        String result;
+        Connection connection = DriverManager.getConnection(dbURL, dbUser, dbPass);
+        connection.setAutoCommit(false);
+        PreparedStatement preparedStatement;
+        String sql = "delete from cars where n=?";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, Integer.parseInt(n));
+            int c = preparedStatement.executeUpdate();
+            connection.commit();
+            result = String.valueOf(c) + " cars was founded and deleted!";
 
+        } catch (Exception e) {
+            result = e.getMessage();
+            catcher(e);
+            connection.rollback();
+        }
+        return result;
+    }
 }
