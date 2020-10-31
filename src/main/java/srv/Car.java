@@ -13,18 +13,12 @@ public class Car {
     private boolean sold;
     private int id;
 
-    public int getID() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    public int getID() { return id; }
+    public void setId(int id) { this.id = id; }
 
     public String getReg_num() {
             return reg_num;
         }
-
     public void setReg_num(String reg_num) {
         this.reg_num = reg_num;
     }
@@ -32,7 +26,6 @@ public class Car {
     public String getColor() {
         return color;
     }
-
     public void setColor(String color) {
         this.color = color;
     }
@@ -40,7 +33,6 @@ public class Car {
     public int getPowerHP() {
         return powerHP;
     }
-
     public void setPowerHP(int powerHP) {
         this.powerHP = powerHP;
     }
@@ -48,16 +40,13 @@ public class Car {
     public boolean isSold() {
         return sold;
     }
-
     public void setSold(boolean sold) {
         this.sold = sold;
     }
 
-
     public String getBrand() {
         return brand;
     }
-
     public void setBrand(String brand) {
         this.brand = brand;
     }
@@ -103,11 +92,11 @@ public class Car {
     }
 
     public Car(String reg_num, String brand, String color, int powerHP, boolean sold, int id) {
-        this.reg_num = reg_num;
-        this.brand = brand;
-        this.color = color;
-        this.powerHP = powerHP;
-        this.sold = sold;
-        this.id = id;
+        this.setReg_num(reg_num);
+        this.setBrand(brand);
+        this.setColor(color);
+        this.setPowerHP(powerHP);
+        this.setSold(sold);
+        this.setId(id);
     }
 }
